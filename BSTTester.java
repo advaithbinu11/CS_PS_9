@@ -9,6 +9,69 @@
  *  email address: ab89658@eid.utexas.edu
  *  TA name: Uzair
  *  Number of slip days I am using: 1
+ * 
+ * Experiment Results 
+ * 
+ * Record the time it takes to do this using the Stopwatch class. 
+ * 0.001098875
+ * Record the height of the tree after inserting the 1000 items. 
+ * 20
+ * Record the size of the tree. (It may not be 1000 because the random number generator may produce duplicates.). 
+ * 1000
+ * Run this experiment 10 times and note the average time to do the insertions, average height of the tree, and average size of the tree.
+ * 0.00030   20.20       1000.00
+ * Repeat the experiment 10 times for the following values of N: 2,000, 4,000, 8,000, 16,000, 32,000, 64,000, 128,000, 256,000, 512,000, and 1,024,000. Record all information. (You can, of course, automate these experiments to save time.)
+ * N    ave time  min possible height  ave height   ave size
+ * 1000  0.00030      19               20.20       1000.00
+ * 2000  0.00064      21               23.30       2000.00
+ * 4000  0.00143      25               27.90       4000.00
+ * 8000  0.00206      27               29.20       8000.00
+ * 16000  0.00367      28               31.90       16000.00
+ * 32000  0.00883      33               34.60       31999.70
+ * 64000  0.01999      35               38.20       63999.80
+ * 128000  0.05022      38               40.30       127998.50
+ * 256000  0.13796      41               43.20       255992.30
+ * 12000  0.38120      42               46.40       511968.40
+ * 1024000  0.78115      46               50.30       1023881.70
+ * N(Set)      ave time
+ * 1000      0.00071
+ * 2000      0.00050
+ * 4000      0.00096
+ * 8000      0.00145
+ * 16000      0.00343
+ * 32000      0.01037
+ * 64000      0.01841
+ * 128000      0.04396
+ * 256000      0.14857
+ * 512000      0.23460
+ * 1024000      0.57462
+ * N       ave time        predicted height    ave size
+1000      0.00215       999                  1000
+2000      0.00593       1999                 2000
+4000      0.02403       3999                 4000
+8000      0.09335       7999                 8000
+16000      0.38110      15999               16000
+32000      1.53802      31999               32000
+64000      6.12068      63999               64000
+
+For N=128000, I predict the avg time is 24 seconds. For N=256000, I predict the avg time is 96 seconds. 
+For N=512000, I predict the avg time is 384.
+N(Set)          ave time
+1000      0.00014
+2000      0.00027
+4000      0.00055
+8000      0.00114
+16000      0.00244
+32000      0.00331
+64000      0.00697
+128000      0.01720
+256000      0.03301
+512000      0.07091
+1024000      0.20673
+How do these times compare to the times it took for you BinarySearchTree class when inserting integers in sorted order? What do you think is the cause for these differences?
+The times for BinarySearchTree is much bigger than the set, probably because the sorted order of the list cause the tree to
+continuously extend the right subtree, so its add is O(n), whereas the TreeSet self-balances so it maintains its 0(log n) add.
+
  */
 
 

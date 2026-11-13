@@ -88,4 +88,4 @@ N(Set)          ave time
 1024000      0.20673
 How do these times compare to the times it took for you BinarySearchTree class when inserting integers in sorted order? What do you think is the cause for these differences?
 The times for BinarySearchTree is much bigger than the set, probably because the sorted order of the list cause the tree to
-continuously extend the right subtree, whereas the TreeSet self-balances.
+continuously extend the right subtree, so its add is O(n), whereas the TreeSet self-balances so it maintains its 0(log n) add.

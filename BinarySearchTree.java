@@ -29,6 +29,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
     private int size;
     // CS314 students. Add a default constructor here if you feel it is necessary.
     public BinarySearchTree() {
+        root = null;
         size = 0;
     }
 
@@ -68,7 +69,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         if (diff < 0) {
             curr.left = addHelper(curr.left, value);
         }
-        else if(diff > 0) {
+        else if (diff > 0) {
             curr.right = addHelper(curr.right, value);
         }
         return curr;
@@ -103,25 +104,24 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
      * @return the root of the updated subtree
      */
     private BSTNode<E> removeHelper(E value, BSTNode<E> temp) {
-        if(temp == null){
+        if (temp == null){
             return null;
         }
-        int dir  = value.compareTo(temp.data);
+        int dir = value.compareTo(temp.data);
         if (dir < 0) {
             temp.left = removeHelper(value, temp.left);
         }
         else if (dir > 0) {
             temp.right = removeHelper(value, temp.right);
-        }
-        else {
+        } else {
             size--;
-            if(temp.isLeaf()) {
+            if (temp.isLeaf()) {
                 temp = null;
             }
-            else if(temp.right == null) {
+            else if (temp.right == null) {
                 temp = temp.left;
             }
-            else if(temp.left == null) {
+            else if (temp.left == null) {
                 temp = temp.right;
             }
             else {
@@ -173,23 +173,19 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
      * @param value the value to look for
      * @return true if value is present in the subtree, false otherwise
      */
-    private boolean isPresentHelper(BSTNode<E> node, E value){
-        if (value.compareTo(node.data) < 0) {
-            if (node.left == null) {
-                return false;
-            }
-            return isPresentHelper(node.left, value);
+    private boolean isPresentHelper(BSTNode<E> node, E value) {
+        if (node == null) {
+            return false;
         }
-        else if(value.compareTo(node.data) > 0) {
-            if (node.right == null) {
-                return false;
-            }
+        int diff = value.compareTo(node.data);
+        if (diff < 0) {
+            return isPresentHelper(node.left, value);
+        } else if (diff > 0) {
             return isPresentHelper(node.right, value);
         }
-        else {
-            return true;
-        }
+        return true;
     }
+
 
 
     /**
@@ -227,12 +223,12 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
      * @param node the root of the subtree to measure
      * @return the height of the subtree
      */
-    public int heightHelper(BSTNode<E> node) {
-        if(node.left == null && node.right == null) {
-            return 0;
+    private int heightHelper(BSTNode<E> node) {
+        if (node == null) {
+            return -1;
         }
-        int leftH = node.left == null ? 0 : heightHelper(node.left);
-        int rightH = node.right == null ? 0 : heightHelper(node.right);
+        int leftH = heightHelper(node.left);
+        int rightH = heightHelper(node.right);
         return 1 + Math.max(leftH, rightH);
     }
 
@@ -260,12 +256,10 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
      * @param node the root of the subtree 
      * @param lst the list the values are stored
      */
-    public void getAllHelper(BSTNode<E> node, List<E> lst) {
-        if (node.left != null) {
+    private void getAllHelper(BSTNode<E> node, List<E> lst) {
+        if (node != null) {
             getAllHelper(node.left, lst);
-        }
-        lst.add(node.data);
-        if (node.right != null) {
+            lst.add(node.data);
             getAllHelper(node.right, lst);
         }
     }
@@ -324,14 +318,13 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         int diff = data.compareTo(node.data);
         while(diff != 0) {
             if (diff < 0) {
-                if(node.left == null) {
+                if (node.left == null) {
                     node.left = new BSTNode<>(data);
                     size++;
                     return true;
                 }
                 node = node.left;
-            }
-            else {
+            } else {
                 if (node.right == null) {
                     node.right = new BSTNode<>(data);
                     size++;
@@ -357,7 +350,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         if (root == null) {
             return null;
         }
-        if(kth < 0 || kth >= size) {
+        if (kth < 0 || kth >= size) {
             throw new IllegalArgumentException("kth must be in bounds");
         }
         int[] cnt = new int[1];
@@ -373,7 +366,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
      * @return the value at the requested rank, or null if not found
      */
     private E getHelper(int[] cnt, BSTNode<E> node) {
-        if(node == null) {
+        if (node == null) {
             throw new IllegalArgumentException("node can't be null");
         }
         else if (cnt == null || cnt.length != 1) {
@@ -386,7 +379,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
                 return res;
             }
         }
-        if(cnt[0] == 0) {
+        if (cnt[0] == 0) {
             return node.data;
         }
         cnt[0]--;
@@ -427,16 +420,12 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
      * @param value the upper bound
      * @param node the root of the subtree
      */
-    public void getLessHelper(List<E> lst, E value, BSTNode<E> node) {
+    private void getLessHelper(List<E> lst, E value, BSTNode<E> node) {
         if (node != null) {
-            if (node.left != null) {
-                getLessHelper(lst, value, node.left);
-            }
+            getLessHelper(lst, value, node.left);
             if (node.data.compareTo(value) < 0) {
                 lst.add(node.data);
-                if (node.right != null) {
-                    getLessHelper(lst, value, node.right);
-                }
+                getLessHelper(lst, value, node.right);
             }
         }
     }
@@ -470,17 +459,13 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
      * @param value the lower bound
      * @param node the root of the subtree
      */
-    public void getMoreHelper(List<E> lst, E value, BSTNode<E> node) {
+    private void getMoreHelper(List<E> lst, E value, BSTNode<E> node) {
         if (node != null) {
             if (node.data.compareTo(value) > 0) {
-                if (node.left != null) {
-                    getMoreHelper(lst, value, node.left);
-                }
+                getMoreHelper(lst, value, node.left);
                 lst.add(node.data);
             }
-            if (node.right != null) {
-                getMoreHelper(lst, value, node.right);
-            }
+            getMoreHelper(lst, value, node.right);
         }
     }
 
@@ -507,7 +492,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         if (node == null) {
             return 0;
         }
-        else if(d == 0) {
+        else if (d == 0) {
             return 1;
         }
         d -= 1;
@@ -528,7 +513,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
     }
 
     private void printTree(BSTNode<E> n, String spaces) {
-        if(n != null){
+        if (n != null){
             printTree(n.right, spaces + "  ");
             System.out.println(spaces + n.data);
             printTree(n.left, spaces + "  ");
