@@ -49,6 +49,15 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         root = addHelper(root, value);
         return oSize < size;
     }
+    /**
+     * Add value to the subtree rooted at curr if it is not already present.
+     * <br>pre: value != null
+     * <br>post: value is present in the subtree; the updated subtree root is
+     * returned and size reflects any node that was added
+     * @param curr the root of the subtree to add to, may be null
+     * @param value the value to add
+     * @return the root of the updated subtree
+     */
     public BSTNode<E> addHelper(BSTNode<E> curr, E value) {
         if (curr == null) {
             size++;
@@ -82,6 +91,15 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         root = removeHelper(value, root);
         return orgSize != size;
     }
+    /**
+     * Remove value from the subtree rooted at temp if it is present.
+     * <br>pre: value != null
+     * <br>post: value is absent from the subtree; the updated subtree root is
+     * returned and size reflects any node that was removed
+     * @param value the value to remove
+     * @param temp the root of the subtree to remove from, may be null
+     * @return the root of the updated subtree
+     */
     private BSTNode<E> removeHelper(E value, BSTNode<E> temp) {
         if(temp == null){
             return null;
@@ -112,6 +130,13 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         }
         return temp;
     } 
+    /**
+     * Return the largest value in the subtree rooted at node.
+     * <br>pre: node != null
+     * <br>post: the maximum value in the subtree is returned
+     * @param node the root of the subtree to search
+     * @return the largest value in the subtree
+     */
     private E maxHelp(BSTNode<E> node){
         while(node.right != null) {
             node = node.right;
@@ -136,6 +161,14 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         }
         return isPresentHelper(root, value);
     }
+    /**
+     * Check whether value is in the subtree rooted at node.
+     * <br>pre: node != null and value != null
+     * <br>post: return true if value is present in the subtree, false otherwise
+     * @param node the root of the subtree to search
+     * @param value the value to look for
+     * @return true if value is present in the subtree, false otherwise
+     */
     private boolean isPresentHelper(BSTNode<E> node, E value){
         if (value.compareTo(node.data) < 0) {
             if (node.left == null) {
@@ -182,6 +215,14 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         return heightHelper(root);
     }
 
+    /**
+     * Return the height of the subtree rooted at node.
+     * <br>pre: node != null
+     * <br>post: the height of the subtree is returned; a single node has
+     * height 0
+     * @param node the root of the subtree to measure
+     * @return the height of the subtree
+     */
     public int heightHelper(BSTNode<E> node) {
         if(node.left == null && node.right == null) {
             return 0;
@@ -207,6 +248,15 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         getAllHelper(root, res);
         return res;
     }
+    /**
+     * Append every value in the subtree rooted at node to lst in ascending
+     * order.
+     * <br>pre: node != null and lst != null
+     * <br>post: all values in the subtree are appended to lst in ascending
+     * order
+     * @param node the root of the subtree to traverse
+     * @param lst the list the values are appended to
+     */
     public void getAllHelper(BSTNode<E> node, List<E> lst) {
         if (node.left != null) {
             getAllHelper(node.left, lst);
@@ -313,6 +363,17 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         cnt[0] = kth;
         return getHelper(cnt, root);
     }
+    /**
+     * Return the value whose ascending rank within the subtree equals cnt[0],
+     * where rank 0 is the smallest value.
+     * <br>pre: node != null and cnt != null and cnt.length == 1
+     * <br>post: cnt[0] is decremented past the values that precede the target;
+     * the target value is returned, or null if the subtree has fewer than
+     * cnt[0] + 1 values
+     * @param cnt a single element array holding the remaining rank to skip
+     * @param node the root of the subtree to search
+     * @return the value at the requested rank, or null if not found
+     */
     public E getHelper(int[] cnt, BSTNode<E> node) {
         E res = null;
         if (node.left != null) {
@@ -354,6 +415,16 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         getLessHelper(lst, value, root);
         return lst;
     }
+    /**
+     * Append every value in the subtree rooted at node that is less than value
+     * to lst in ascending order.
+     * <br>pre: lst != null and value != null and node != null
+     * <br>post: all values in the subtree less than value are appended to lst
+     * in ascending order
+     * @param lst the list the values are appended to
+     * @param value the exclusive upper bound
+     * @param node the root of the subtree to traverse
+     */
     public void getLessHelper(List<E> lst, E value, BSTNode<E> node) {
         if (node.left != null) {
             getLessHelper(lst, value, node.left);
@@ -387,6 +458,16 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         getMoreHelper(lst, value, root);
         return lst;
     }
+    /**
+     * Append every value in the subtree rooted at node that is greater than
+     * value to lst in ascending order.
+     * <br>pre: lst != null and value != null and node != null
+     * <br>post: all values in the subtree greater than value are appended to
+     * lst in ascending order
+     * @param lst the list the values are appended to
+     * @param value the exclusive lower bound
+     * @param node the root of the subtree to traverse
+     */
     public void getMoreHelper(List<E> lst, E value, BSTNode<E> node) {
         if (node.data.compareTo(value) > 0) {
             if (node.left != null) {
@@ -412,6 +493,15 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         }
         return depthHelper(root, d);
     }
+    /**
+     * Return the number of nodes at depth d within the subtree rooted at node,
+     * where node itself is at depth 0.
+     * <br>pre: none
+     * <br>post: the number of nodes at depth d in the subtree is returned
+     * @param node the root of the subtree to search, may be null
+     * @param d the target depth relative to node
+     * @return the number of nodes at depth d in the subtree
+     */
     private int depthHelper(BSTNode<E> node, int d) {
         if (node == null) {
             return 0;
@@ -436,6 +526,15 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
         printTree(root, "");
     }
 
+    /**
+     * Print the subtree rooted at n rotated 90 degrees counter clockwise, with
+     * each node on its own line and children indented past their parent.
+     * <br>pre: spaces != null
+     * <br>post: the subtree is written to standard out; nothing is printed for
+     * an empty subtree
+     * @param n the root of the subtree to print, may be null
+     * @param spaces the leading indentation for this subtree's root
+     */
     private void printTree(BSTNode<E> n, String spaces) {
         if(n != null){
             printTree(n.right, spaces + "  ");
